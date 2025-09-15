@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generator Modul Ajar AI</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/lucide/0.292.0/lucide.min.css">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        .form-section {
+            background-color: white;
+            padding: 2rem;
+            border-radius: 0.75rem;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            margin-bottom: 1.5rem;
+        }
+        .form-section-title {
+            font-size: 1.25rem;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111827;
+        }
+        .input-group {
+            margin-bottom: 1.25rem;
+        }
+        .input-label {
+            display: block;
+            font-weight: 500;
+            margin-bottom: 0.5rem;
+            color: #374151;
+            font-size: 0.875rem;
+        }
+        .form-input, .form-select, .form-textarea {
+            width: 100%;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            padding: 0.75rem 1rem;
+            transition: all 0.2s ease-in-out;
+            background-color: #f9fafb;
+        }
+        .form-input:focus, .form-select:focus, .form-textarea:focus {
+            outline: 2px solid transparent;
+            outline-offset: 2px;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.4);
+        }
+        .checkbox-label {
+            display: flex;
+            align-items: center;
+            font-weight: 500;
+            color: #374151;
+        }
+        .form-checkbox {
+            height: 1.25rem;
+            width: 1.25rem;
+            border-radius: 0.25rem;
+            border-color: #d1d5db;
+            color: #3b82f6;
+            margin-right: 0.5rem;
+        }
+        .btn-primary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: #2563eb;
+            color: white;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: none;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+        .btn-primary:hover {
+            background-color: #1d4ed8;
+        }
+        .btn-primary:disabled {
+            background-color: #9ca3af;
+            cursor: not-allowed;
+        }
+        .btn-secondary {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            background-color: #e5e7eb;
+            color: #1f2937;
+            font-weight: 600;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem;
+            border: 1px solid #d1d5db;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+         .btn-secondary:hover {
+            background-color: #d1d5db;
+        }
+        .output-container {
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            border-radius: 0.75rem;
+            padding: 1.5rem;
+            margin-top: 1rem;
+            white-space: pre-wrap;
+            font-family: 'Courier New', Courier, monospace;
+            line-height: 1.6;
+            color: #333;
+            max-height: 500px;
+            overflow-y: auto;
+        }
+        .spinner {
+            border: 4px solid rgba(0, 0, 0, 0.1);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            border-left-color: #fff;
+            animation: spin 1s ease infinite;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .output-section {
+            display: none;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+        th, td {
+            border: 1px solid #d1d5db;
+            padding: 0.75rem;
+            text-align: left;
+            font-size: 0.875rem;
+        }
+        th {
+            background-color: #f3f4f6;
+            font-weight: 600;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+
+    <div class="container mx-auto p-4 md:p-8 max-w-7xl">
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800">Generator Modul Ajar AI</h1>
+            <p class="text-lg text-gray-600 mt-2">Buat Modul Ajar Kurikulum Merdeka dengan Bantuan AI</p>
+        </header>
+
+        <!-- Bagian 1: Informasi Umum -->
+        <div class="form-section">
+            <h2 class="form-section-title">1. Informasi Umum Modul</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="input-group">
+                    <label for="namaPenyusun" class="input-label">Nama Penyusun</label>
+                    <input type="text" id="namaPenyusun" class="form-input" placeholder="Contoh: Budi Santoso, S.Pd.">
+                </div>
+                <div class="input-group">
+                    <label for="institusi" class="input-label">Institusi</label>
+                    <input type="text" id="institusi" class="form-input" placeholder="Contoh: SMA Negeri 1 Harapan Bangsa">
+                </div>
+                <div class="input-group">
+                    <label for="tahunAjar" class="input-label">Tahun Ajaran</label>
+                    <input type="text" id="tahunAjar" class="form-input" placeholder="Contoh: 2025/2026">
+                </div>
+                <div class="input-group">
+                    <label for="jenjang" class="input-label">Jenjang Sekolah</label>
+                    <select id="jenjang" class="form-select">
+                        <option>PAUD</option>
+                        <option>SD/MI</option>
+                        <option>SMP/MTs</option>
+                        <option selected>SMA/MA/SMK</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label for="mapel" class="input-label">Mata Pelajaran</label>
+                    <input type="text" id="mapel" class="form-input" placeholder="Contoh: Informatika">
+                </div>
+                 <div class="input-group">
+                    <label for="fase" class="input-label">Fase</label>
+                    <select id="fase" class="form-select">
+                        <option>A</option>
+                        <option>B</option>
+                        <option>C</option>
+                        <option>D</option>
+                        <option>E</option>
+                        <option selected>F</option>
+                    </select>
+                </div>
+                 <div class="input-group">
+                    <label for="alokasiWaktu" class="input-label">Alokasi Waktu</label>
+                    <input type="text" id="alokasiWaktu" class="form-input" placeholder="Contoh: 2 JP x 45 Menit">
+                </div>
+            </div>
+        </div>
+        
+        <!-- Bagian 2: Komponen Awal -->
+        <div class="form-section">
+            <h2 class="form-section-title">2. Komponen Awal</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                 <div>
+                    <label class="input-label">Profil Pelajar Pancasila</label>
+                    <div class="grid grid-cols-2 gap-2 mt-2">
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Beriman, bertakwa kepada Tuhan YME, dan berakhlak mulia"> Beriman & Bertakwa</label>
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Berkebinekaan global"> Berkebinekaan Global</label>
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Bergotong royong"> Gotong Royong</label>
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Mandiri"> Mandiri</label>
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Bernalar Kritis" checked> Bernalar Kritis</label>
+                        <label class="checkbox-label"><input type="checkbox" class="form-checkbox ppp" value="Kreatif" checked> Kreatif</label>
+                    </div>
+                </div>
+                <div class="input-group">
+                    <label for="sarpras" class="input-label">Sarana dan Prasarana</label>
+                    <textarea id="sarpras" class="form-textarea" rows="4" placeholder="Contoh: Papan tulis, Spidol, LCD Proyektor, Laptop/PC, Jaringan internet"></textarea>
+                </div>
+            </div>
+            <div class="input-group mt-6">
+                <label for="karakteristikSiswa" class="input-label">Target dan Karakteristik Peserta Didik</label>
+                <textarea id="karakteristikSiswa" class="form-textarea" rows="4" placeholder="Jelaskan secara singkat karakteristik peserta didik. Contoh: Peserta didik reguler/tipikal, dengan kemampuan awal memahami konsep dasar. Sebagian siswa memiliki minat belajar tinggi pada praktik di laboratorium."></textarea>
+            </div>
+        </div>
+
+        <!-- Bagian 3: Capaian Pembelajaran -->
+        <div class="form-section">
+            <h2 class="form-section-title">3. Capaian Pembelajaran (CP)</h2>
+            <div class="input-group">
+                <label for="cp" class="input-label">
+                    Masukkan Elemen dan Capaian Pembelajaran
+                    <span class="text-gray-500 font-normal block">Salin (copy-paste) CP dari dokumen resmi sesuai elemen dan fasenya.</span>
+                </label>
+                <textarea id="cp" class="form-textarea" rows="6" placeholder="Contoh: Pada akhir fase F, peserta didik mampu memahami peran sistem operasi dan cara kerja komputer, menerapkan praktik baik konsep keamanan siber, serta menganalisis dan merefleksikan dampak sosial informatika."></textarea>
+            </div>
+            <button id="btnGenerateTP" class="btn-primary">
+                <i data-lucide="sparkles" class="w-5 h-5"></i>
+                Buat Tujuan Pembelajaran (TP)
+            </button>
+        </div>
+
+        <!-- Bagian 4: Tujuan Pembelajaran (Output) -->
+        <div id="outputSectionTP" class="form-section output-section">
+            <h2 class="form-section-title">4. Hasil Analisis AI: Tujuan Pembelajaran (TP)</h2>
+            <div id="outputTP" class="output-container bg-white"></div>
+            <div class="mt-6 flex gap-4">
+                <button id="btnGenerateATP" class="btn-primary">
+                    <i data-lucide="arrow-down-up" class="w-5 h-5"></i>
+                    Buat Alur Tujuan Pembelajaran (ATP)
+                </button>
+                 <button onclick="copyToClipboard('outputTP')" class="btn-secondary">
+                    <i data-lucide="copy" class="w-5 h-5"></i> Salin TP
+                </button>
+            </div>
+        </div>
+
+        <!-- Bagian 5: Alur Tujuan Pembelajaran (Output) -->
+        <div id="outputSectionATP" class="form-section output-section">
+            <h2 class="form-section-title">5. Hasil Analisis AI: Alur Tujuan Pembelajaran (ATP)</h2>
+            <div id="outputATP" class="output-container bg-white"></div>
+             <div class="mt-6 flex gap-4">
+                <button id="btnGenerateKKTP" class="btn-primary">
+                    <i data-lucide="check-circle-2" class="w-5 h-5"></i>
+                    Buat Kriteria Ketercapaian (KKTP)
+                </button>
+                 <button onclick="copyToClipboard('outputATP')" class="btn-secondary">
+                    <i data-lucide="copy" class="w-5 h-5"></i> Salin ATP
+                </button>
+            </div>
+        </div>
+        
+        <!-- Bagian 6: Kriteria Ketercapaian (Output) -->
+        <div id="outputSectionKKTP" class="form-section output-section">
+            <h2 class="form-section-title">6. Hasil Analisis AI: Kriteria Ketercapaian (KKTP)</h2>
+            <div id="outputKKTP" class="output-container bg-white"></div>
+            <div class="mt-6 flex gap-4">
+                <button id="btnGenerateMA" class="btn-primary">
+                     <i data-lucide="file-text" class="w-5 h-5"></i>
+                    Buat Modul Ajar Lengkap
+                </button>
+                 <button onclick="copyToClipboard('outputKKTP')" class="btn-secondary">
+                    <i data-lucide="copy" class="w-5 h-5"></i> Salin KKTP
+                </button>
+            </div>
+        </div>
+
+        <!-- Bagian 7: Pencarian Materi Ajar (Opsional) -->
+        <div id="searchSectionMateri" class="form-section output-section">
+            <h2 class="form-section-title">7. Cari & Kembangkan Materi Ajar (Opsional)</h2>
+            <div class="input-group">
+                <label for="materiTopic" class="input-label">
+                    Topik Materi
+                    <span class="text-gray-500 font-normal block">Masukkan topik atau kata kunci materi yang ingin Anda kembangkan. AI akan membuatkan ringkasan, contoh, dan analogi.</span>
+                </label>
+                <textarea id="materiTopic" class="form-textarea" rows="2" placeholder="Contoh dari TP di atas: Konsep Dasar Sistem Operasi"></textarea>
+            </div>
+            <button id="btnGenerateMateri" class="btn-primary">
+                <i data-lucide="search-check" class="w-5 h-5"></i>
+                Kembangkan Materi
+            </button>
+            
+            <!-- Output container for Materi Ajar will be inside this section -->
+            <div id="outputSectionMateri" class="output-section mt-6">
+                 <h3 class="text-lg font-semibold text-gray-700 mb-2">Hasil Pengembangan Materi:</h3>
+                 <div id="outputMateri" class="output-container bg-white"></div>
+                 <div class="mt-4">
+                     <button onclick="copyToClipboard('outputMateri')" class="btn-secondary">
+                        <i data-lucide="copy" class="w-5 h-5"></i> Salin Materi
+                    </button>
+                 </div>
+            </div>
+        </div>
+
+        <!-- Bagian 8: Modul Ajar Lengkap (Output) -->
+        <div id="outputSectionMA" class="form-section output-section">
+            <h2 class="form-section-title">8. Hasil Akhir: Modul Ajar Lengkap</h2>
+            <div id="outputMA" class="output-container bg-white"></div>
+            <div class="mt-6 flex gap-4">
+                 <button onclick="printContent('outputMA')" class="btn-secondary">
+                    <i data-lucide="printer" class="w-5 h-5"></i> Cetak Modul
+                </button>
+                 <button onclick="copyToClipboard('outputMA')" class="btn-secondary">
+                    <i data-lucide="copy" class="w-5 h-5"></i> Salin Modul
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        lucide.createIcons();
+
+        // Elemen Tombol
+        const btnGenerateTP = document.getElementById('btnGenerateTP');
+        const btnGenerateATP = document.getElementById('btnGenerateATP');
+        const btnGenerateKKTP = document.getElementById('btnGenerateKKTP');
+        const btnGenerateMateri = document.getElementById('btnGenerateMateri');
+        const btnGenerateMA = document.getElementById('btnGenerateMA');
+
+        // Elemen Output Section
+        const outputSectionTP = document.getElementById('outputSectionTP');
+        const outputSectionATP = document.getElementById('outputSectionATP');
+        const outputSectionKKTP = document.getElementById('outputSectionKKTP');
+        const searchSectionMateri = document.getElementById('searchSectionMateri');
+        const outputSectionMateri = document.getElementById('outputSectionMateri');
+        const outputSectionMA = document.getElementById('outputSectionMA');
+
+        // Elemen Output Container
+        const outputTP = document.getElementById('outputTP');
+        const outputATP = document.getElementById('outputATP');
+        const outputKKTP = document.getElementById('outputKKTP');
+        const outputMateri = document.getElementById('outputMateri');
+        const outputMA = document.getElementById('outputMA');
+
+        // State untuk menyimpan hasil
+        let generatedTP = '';
+        let generatedATP = '';
+        let generatedKKTP = '';
+        let generatedMateri = '';
+
+        const model = 'gemini-2.5-flash-preview-05-20';
+        
+        // --- API Key Anda sudah dimasukkan di sini ---
+        const apiKey = 'AIzaSyD2EuULB51b6Bpe99MtVzdsWo5qQFkw5QI'; 
+
+        async function callGeminiAPI(prompt) {
+            // Cek apakah API Key valid (opsional, karena sudah diisi)
+            if (!apiKey || apiKey === 'MASUKKAN_API_KEY_ANDA_DI_SINI') {
+                const errorMessage = 'Error: API Key tidak valid. Silakan periksa kembali.';
+                alert(errorMessage);
+                return errorMessage;
+            }
+
+            const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${apiKey}`;
+            const payload = {
+                contents: [{ parts: [{ text: prompt }] }],
+                 generationConfig: {
+                    temperature: 0.4,
+                    topP: 0.95,
+                    topK: 40,
+                },
+            };
+
+            const maxRetries = 3;
+            let delay = 1000; // Mulai dengan jeda 1 detik
+
+            for (let i = 0; i < maxRetries; i++) {
+                try {
+                    const response = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+
+                    // Jika server sibuk (503) dan masih ada kesempatan retry
+                    if (response.status === 503 && i < maxRetries - 1) {
+                        console.warn(`Server sibuk. Mencoba lagi dalam ${delay / 1000} detik...`);
+                        await new Promise(resolve => setTimeout(resolve, delay));
+                        delay *= 2; // Gandakan waktu tunggu untuk percobaan berikutnya
+                        continue; // Lanjut ke iterasi berikutnya untuk mencoba lagi
+                    }
+
+                    if (!response.ok) {
+                        const errorBody = await response.text();
+                        throw new Error(`API call failed with status ${response.status}: ${errorBody}`);
+                    }
+                    const result = await response.json();
+                    if (result.candidates && result.candidates.length > 0) {
+                        return result.candidates[0].content.parts[0].text; // Jika berhasil, kembalikan hasil
+                    } else {
+                        // Handle jika tidak ada kandidat jawaban dari API
+                        throw new Error("API response did not contain any candidates.");
+                    }
+                
+                } catch (error) {
+                    if (i === maxRetries - 1) { // Jika ini adalah percobaan terakhir
+                         console.error("Gagal menghubungi API setelah beberapa kali mencoba:", error);
+                        return `Terjadi kesalahan saat menghubungi AI setelah beberapa kali mencoba. Silakan coba lagi nanti. Error: ${error.message}`;
+                    }
+                }
+            }
+        }
+
+        function showLoading(button, originalText) {
+            button.disabled = true;
+            button.innerHTML = `<div class="spinner"></div> ${originalText}...`;
+        }
+
+        function hideLoading(button, icon, originalText) {
+            button.disabled = false;
+            button.innerHTML = `<i data-lucide="${icon}" class="w-5 h-5"></i> ${originalText}`;
+            lucide.createIcons();
+        }
+
+        function getFormData() {
+            const pppCheckboxes = document.querySelectorAll('.ppp:checked');
+            const pppValues = Array.from(pppCheckboxes).map(cb => cb.value);
+
+            return {
+                namaPenyusun: document.getElementById('namaPenyusun').value,
+                institusi: document.getElementById('institusi').value,
+                tahunAjar: document.getElementById('tahunAjar').value,
+                jenjang: document.getElementById('jenjang').value,
+                mapel: document.getElementById('mapel').value,
+                fase: document.getElementById('fase').value,
+                alokasiWaktu: document.getElementById('alokasiWaktu').value,
+                profilPelajarPancasila: pppValues.join(', '),
+                sarpras: document.getElementById('sarpras').value,
+                karakteristikSiswa: document.getElementById('karakteristikSiswa').value,
+                cp: document.getElementById('cp').value
+            };
+        }
+
+        // Event Listener untuk Tombol Generate TP
+        btnGenerateTP.addEventListener('click', async () => {
+            const formData = getFormData();
+            if (!formData.cp.trim()) {
+                alert("Mohon isi Capaian Pembelajaran terlebih dahulu.");
+                return;
+            }
+
+            const prompt = `
+                Anda adalah seorang ahli kurikulum pendidikan di Indonesia yang sangat memahami Kurikulum Merdeka.
+                Berdasarkan Capaian Pembelajaran (CP) untuk mata pelajaran ${formData.mapel} Fase ${formData.fase} berikut:
+                "${formData.cp}"
+
+                Tolong buatkan dekomposisi menjadi beberapa Tujuan Pembelajaran (TP) yang jelas, spesifik, dan terukur.
+                Sajikan hasilnya dalam format tabel Markdown dengan kolom "Kode TP" dan "Tujuan Pembelajaran".
+                Pastikan TP mencakup aspek kompetensi dan konten dari CP.
+                Contoh:
+                | Kode TP | Tujuan Pembelajaran |
+                |---|---|
+                | F.1 | Peserta didik mampu menjelaskan konsep dasar dan peran sistem operasi. |
+                | F.2 | Peserta didik mampu mengidentifikasi komponen utama komputer dan fungsinya. |
+            `;
+            
+            showLoading(btnGenerateTP, 'Membuat TP');
+            const result = await callGeminiAPI(prompt);
+            generatedTP = result;
+            outputTP.innerHTML = formatMarkdownToHTML(result);
+            outputSectionTP.style.display = 'block';
+            outputSectionATP.style.display = 'none';
+            outputSectionKKTP.style.display = 'none';
+            searchSectionMateri.style.display = 'none';
+            outputSectionMateri.style.display = 'none';
+            outputSectionMA.style.display = 'none';
+            hideLoading(btnGenerateTP, 'sparkles', 'Buat Tujuan Pembelajaran (TP)');
+        });
+
+        // Event Listener untuk Tombol Generate ATP
+        btnGenerateATP.addEventListener('click', async () => {
+            if (!generatedTP) {
+                alert("Harap buat Tujuan Pembelajaran terlebih dahulu.");
+                return;
+            }
+            const formData = getFormData();
+
+            const prompt = `
+                Anda adalah seorang ahli perancangan pembelajaran.
+                Berdasarkan daftar Tujuan Pembelajaran (TP) berikut untuk mata pelajaran ${formData.mapel}:
+                ${generatedTP}
+
+                Tolong susunlah menjadi sebuah Alur Tujuan Pembelajaran (ATP) yang logis dan sistematis. Urutkan dari TP yang paling mendasar hingga yang paling kompleks atau dari konkret ke abstrak.
+                Sajikan hasilnya dalam format daftar bernomor (numbered list) sederhana.
+                Hanya tampilkan daftar urutan TP, tidak perlu penjelasan tambahan.
+                Contoh:
+                1. (F.1) Peserta didik mampu menjelaskan konsep dasar dan peran sistem operasi.
+                2. (F.2) Peserta didik mampu mengidentifikasi komponen utama komputer dan fungsinya.
+                3. ...
+            `;
+
+            showLoading(btnGenerateATP, 'Membuat ATP');
+            const result = await callGeminiAPI(prompt);
+            generatedATP = result;
+            outputATP.innerHTML = formatMarkdownToHTML(result);
+            outputSectionATP.style.display = 'block';
+            hideLoading(btnGenerateATP, 'arrow-down-up', 'Buat Alur Tujuan Pembelajaran (ATP)');
+        });
+
+        // Event Listener untuk Tombol Generate KKTP
+        btnGenerateKKTP.addEventListener('click', async () => {
+            if (!generatedTP) {
+                alert("Harap buat Tujuan Pembelajaran terlebih dahulu.");
+                return;
+            }
+            const formData = getFormData();
+
+            const prompt = `
+                Anda adalah seorang ahli asesmen dan evaluasi pendidikan.
+                Berdasarkan daftar Tujuan Pembelajaran (TP) berikut untuk mata pelajaran ${formData.mapel}:
+                ${generatedTP}
+
+                Tolong buatkan Kriteria Ketercapaian Tujuan Pembelajaran (KKTP) untuk setiap TP.
+                Sajikan dalam format tabel Markdown dengan kolom "Tujuan Pembelajaran" dan "Kriteria Ketercapaian".
+                Di dalam kolom "Kriteria Ketercapaian", jelaskan secara singkat apa yang harus ditunjukkan siswa untuk dianggap mencapai tujuan tersebut.
+                Contoh:
+                | Tujuan Pembelajaran | Kriteria Ketercapaian |
+                |---|---|
+                | (F.1) Menjelaskan konsep dasar dan peran sistem operasi. | Mampu menyebutkan minimal 3 fungsi utama sistem operasi dengan benar. |
+                | (F.2) Mengidentifikasi komponen utama komputer. | Mampu menunjukkan dan menyebutkan fungsi dari CPU, RAM, dan Storage. |
+            `;
+
+            showLoading(btnGenerateKKTP, 'Membuat KKTP');
+            const result = await callGeminiAPI(prompt);
+            generatedKKTP = result;
+            outputKKTP.innerHTML = formatMarkdownToHTML(result);
+            outputSectionKKTP.style.display = 'block';
+            searchSectionMateri.style.display = 'block';
+            hideLoading(btnGenerateKKTP, 'check-circle-2', 'Buat Kriteria Ketercapaian (KKTP)');
+        });
+
+        // Event Listener untuk Tombol Generate Materi Ajar
+        btnGenerateMateri.addEventListener('click', async () => {
+            const formData = getFormData();
+            const topic = document.getElementById('materiTopic').value;
+            if (!topic.trim()) {
+                alert("Mohon masukkan topik materi yang ingin dikembangkan.");
+                return;
+            }
+
+            const prompt = `
+                Anda adalah seorang guru ahli untuk mata pelajaran "${formData.mapel}" untuk Fase ${formData.fase}.
+                Buatkan sebuah ringkasan materi ajar yang komprehensif, jelas, dan mudah dipahami untuk topik: "${topic}".
+
+                Sajikan materi dalam format Markdown yang terstruktur baik, mencakup:
+                1.  **Ringkasan Konsep Utama:** Jelaskan ide-ide pokok dari topik tersebut.
+                2.  **Poin-Poin Kunci:** Gunakan bullet points untuk menyoroti informasi terpenting.
+                3.  **Contoh Konkret:** Berikan contoh nyata atau studi kasus yang relevan dengan kehidupan siswa.
+                4.  **Analogi atau Metafora:** Gunakan perumpamaan sederhana untuk menjelaskan konsep yang rumit.
+            `;
+            
+            showLoading(btnGenerateMateri, 'Mengembangkan');
+            const result = await callGeminiAPI(prompt);
+            generatedMateri = result; // Save result
+            outputMateri.innerHTML = formatMarkdownToHTML(result);
+            outputSectionMateri.style.display = 'block'; // Show the output
+            hideLoading(btnGenerateMateri, 'search-check', 'Kembangkan Materi');
+        });
+
+
+        // Event Listener untuk Tombol Generate Modul Ajar
+        btnGenerateMA.addEventListener('click', async () => {
+             if (!generatedTP || !generatedATP || !generatedKKTP) {
+                alert("Harap lengkapi semua langkah sebelumnya (TP, ATP, dan KKTP).");
+                return;
+            }
+            const formData = getFormData();
+            
+            const materiSection = generatedMateri 
+                ? `
+**D. MATERI AJAR PENDUKUNG**
+- **Ringkasan Materi:**
+${generatedMateri}
+` 
+                : '';
+
+            const prompt = `
+                Buatkan sebuah Modul Ajar yang lengkap dan terstruktur berdasarkan informasi berikut. Gunakan format Markdown yang rapi.
+
+                **A. INFORMASI UMUM**
+                - **Nama Penyusun:** ${formData.namaPenyusun}
+                - **Institusi:** ${formData.institusi}
+                - **Tahun Ajaran:** ${formData.tahunAjar}
+                - **Jenjang Sekolah:** ${formData.jenjang}
+                - **Mata Pelajaran:** ${formData.mapel}
+                - **Fase / Kelas:** ${formData.fase}
+                - **Alokasi Waktu:** ${formData.alokasiWaktu}
+                
+                **B. KOMPONEN AWAL**
+                - **Profil Pelajar Pancasila yang Berkaitan:** ${formData.profilPelajarPancasila}
+                - **Sarana dan Prasarana:** ${formData.sarpras}
+                - **Target dan Karakteristik Peserta Didik:** ${formData.karakteristikSiswa}
+                
+                **C. KOMPONEN INTI**
+                - **Capaian Pembelajaran:** ${formData.cp}
+                - **Tujuan Pembelajaran (TP):**
+                ${generatedTP}
+                - **Alur Tujuan Pembelajaran (ATP):**
+                ${generatedATP}
+                - **Kriteria Ketercapaian Tujuan Pembelajaran (KKTP):**
+                ${generatedKKTP}
+                
+                ${materiSection}
+
+                **INSTRUKSI TAMBAHAN:**
+                1.  Berdasarkan semua data di atas, kembangkan bagian **Pemahaman Bermakna**, **Pertanyaan Pemantik**, **Kegiatan Pembelajaran (Pendahuluan, Inti, Penutup)**, dan **Rencana Asesmen (Formatif dan Sumatif)**.
+                2.  Untuk **Kegiatan Pembelajaran**, buatlah alur kegiatan yang detail untuk pertemuan sesuai alokasi waktu. Jelaskan aktivitas guru dan siswa. Jika ada materi ajar pendukung, integrasikan materi tersebut ke dalam kegiatan inti.
+                3.  Untuk **Rencana Asesmen**, berikan contoh bentuk asesmen yang relevan (misalnya: rubrik penilaian, soal esai singkat, lembar observasi).
+                4.  Sajikan semua output dalam format Markdown yang terstruktur dengan baik, menggunakan heading (#, ##, ###), bold (**), dan list (-, *).
+            `;
+            
+            showLoading(btnGenerateMA, 'Membuat Modul');
+            const result = await callGeminiAPI(prompt);
+            outputMA.innerHTML = formatMarkdownToHTML(result);
+            outputSectionMA.style.display = 'block';
+            hideLoading(btnGenerateMA, 'file-text', 'Buat Modul Ajar Lengkap');
+        });
+
+        function formatMarkdownToHTML(md) {
+            if (!md) return '';
+            let html = md;
+            
+            // Headings
+            html = html.replace(/^### (.*$)/gm, '<h3>$1</h3>');
+            html = html.replace(/^## (.*$)/gm, '<h2>$1</h2>');
+            html = html.replace(/^# (.*$)/gm, '<h1>$1</h1>');
+
+            // Bold
+            html = html.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            
+            // Italic
+            html = html.replace(/\*(.*?)\*/g, '<em>$1</em>');
+
+            // Lists
+            html = html.replace(/^\s*[\-\*] (.*)/gm, '<ul><li>$1</li></ul>');
+            html = html.replace(/<\/ul>\n<ul>/g, '');
+            html = html.replace(/^\s*[0-9]+\. (.*)/gm, '<ol><li>$1</li></ol>');
+            html = html.replace(/<\/ol>\n<ol>/g, '');
+
+            // Tables
+            const lines = html.split('\n');
+            let inTable = false;
+            let tableHtml = '';
+            let finalHtml = '';
+            for (let i = 0; i < lines.length; i++) {
+                let line = lines[i].trim();
+                if (line.startsWith('|') && line.endsWith('|')) {
+                    if (!inTable) {
+                        inTable = true;
+                        tableHtml += '<table class="w-full border-collapse">';
+                        const headers = line.slice(1, -1).split('|').map(h => h.trim());
+                        tableHtml += '<thead><tr>';
+                        headers.forEach(header => {
+                            tableHtml += `<th class="border p-2 bg-gray-100">${header}</th>`;
+                        });
+                        tableHtml += '</tr></thead><tbody>';
+                        // Skip separator line
+                        if (lines[i+1] && lines[i+1].match(/^\|(\s*:?---:?\s*\|)+$/)) {
+                            i++;
+                        }
+                    } else {
+                        const cells = line.slice(1, -1).split('|').map(c => c.trim());
+                        if (cells.length > 0 && cells.some(c => c)) {
+                           tableHtml += '<tr>';
+                            cells.forEach(cell => {
+                                tableHtml += `<td class="border p-2">${cell}</td>`;
+                            });
+                            tableHtml += '</tr>';
+                        }
+                    }
+                } else {
+                    if (inTable) {
+                        inTable = false;
+                        tableHtml += '</tbody></table>';
+                        finalHtml += tableHtml;
+                        tableHtml = '';
+                    }
+                    finalHtml += line + '\n';
+                }
+            }
+             if (inTable) {
+                tableHtml += '</tbody></table>';
+                finalHtml += tableHtml;
+            }
+            return finalHtml;
+        }
+
+        function copyToClipboard(elementId) {
+            const container = document.getElementById(elementId);
+            const rawText = container.innerText || container.textContent;
+            navigator.clipboard.writeText(rawText).then(() => {
+                alert('Teks berhasil disalin!');
+            }, (err) => {
+                alert('Gagal menyalin teks.');
+                console.error('Could not copy text: ', err);
+            });
+        }
+
+        function printContent(elementId) {
+            const content = document.getElementById(elementId).innerHTML;
+            const printWindow = window.open('', '', 'height=600,width=800');
+            printWindow.document.write('<html><head><title>Cetak Modul Ajar</title>');
+            printWindow.document.write('<style>body{font-family:sans-serif;} table{width:100%; border-collapse:collapse;} th,td{border:1px solid #ccc; padding:8px; text-align:left;}</style>');
+            printWindow.document.write('</head><body>');
+            printWindow.document.write(content);
+            printWindow.document.write('</body></html>');
+            printWindow.document.close();
+            printWindow.print();
+        }
+
+    </script>
+</body>
+</html>
+
